@@ -1,7 +1,12 @@
+import tkinter as tk
+
 import pygame
 from tkinter import *
 from tkinter import messagebox
-from random import randrange
+# from random import randrange
+
+root = tk.Tk()
+root.destroy()
 
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
@@ -79,7 +84,7 @@ def playerHits(grid, WIDTH, HEIGHT, MARGIN, turn):
     return True
 
 
-def createViewGridForPlayer(player_bg, screen, MARGIN, WIDTH, HEIGHT, isSecond):
+def create_grid_player(player_bg, screen, MARGIN, WIDTH, HEIGHT, isSecond):
     for row in range(0, 10):
         for col in range(0, 10):
             color = None
@@ -101,7 +106,7 @@ def createViewGridForPlayer(player_bg, screen, MARGIN, WIDTH, HEIGHT, isSecond):
                                  [(MARGIN + WIDTH) * col + MARGIN, (MARGIN + HEIGHT) * row + MARGIN, WIDTH, HEIGHT])
 
 
-def createViewGridForEnemy(grid, screen, MARGIN, WIDTH, HEIGHT, isSecond):
+def create_view_enemy(grid, screen, MARGIN, WIDTH, HEIGHT, isSecond):
     for row in range(0, 10):
         for col in range(0, 10):
             color = None
@@ -150,14 +155,15 @@ def main():
         for e in pygame.event.get():
             if warn == False:
                 messagebox.showinfo('Game is about to begin',
-                                    'First player will place his ship on blue grid, then second player place on blue grid!You hit on green grid!Have fun!')
+                                    'First player will place his ship on blue grid,'
+                                    'then second player place on blue grid!You hit on green grid!Have fun!')
                 warn = True
             if e.type == pygame.QUIT:
                 loop = False
             elif e.type == pygame.MOUSEBUTTONDOWN:
                 if firstShipIsSet == True and secondShipIsSet == True:
                     if playerHits(player_bg[1 - turn], WIDTH, HEIGHT, MARGIN, turn):
-                        if check_if_ship_is_sunk(player_bg[1 - turn]) == True:
+                        if check_if_ship_is_sunk(player_bg[1 - turn]):
                             messagebox.showinfo('', f'Ship was sunk! Player {turn} won!')
                             pygame.quit()
                         turn = 1 - turn
@@ -202,8 +208,8 @@ def main():
 
         screen.fill(BLACK)
 
-        createViewGridForPlayer(player_bg[turn], screen, MARGIN, WIDTH, HEIGHT, turn == 1)
-        createViewGridForEnemy(player_bg[1 - turn], screen, MARGIN, WIDTH, HEIGHT, (1 - turn) == 1)
+        create_grid_player(player_bg[turn], screen, MARGIN, WIDTH, HEIGHT, turn == 1)
+        create_view_enemy(player_bg[1 - turn], screen, MARGIN, WIDTH, HEIGHT, (1 - turn) == 1)
 
         clock.tick(60)
         pygame.display.flip()
@@ -211,3 +217,4 @@ def main():
 
 
 main()
+
